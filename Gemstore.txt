@@ -1,0 +1,166 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const GemstoreApp());
+}
+
+class GemstoreApp extends StatelessWidget {
+  const GemstoreApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomePage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ''),
+        ],
+      ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: const Icon(Icons.menu, color: Colors.black),
+        title: const Text('Gemstore', style: TextStyle(color: Colors.black)),
+        actions: const [
+          Icon(Icons.notifications, color: Colors.black),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const [
+                  CategoryButton(label: 'Women', icon: Icons.female, isActive: true),
+                  CategoryButton(label: 'Men', icon: Icons.male),
+                  CategoryButton(label: 'Accessories', icon: Icons.watch),
+                  CategoryButton(label: 'Beauty', icon: Icons.brush),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                        'https://images.pexels.com/photos/31331094/pexels-photo-31331094/free-photo-of-elegant-woman-in-red-gown-by-lakeside.jpeg?auto=compress&cs=tinysrgb&w=600'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: const Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Autumn Collection 2022',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Feature Products',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  ProductCard(
+                    'Sweater',
+                    '\$45.00',
+                    'https://media.istockphoto.com/id/637756712/photo/woman-enjoying-morning-coffee.jpg?b=1&s=612x612&w=0&k=20&c=miVlxO7tlfB3CPxTROMUwJUAipSBk7XaNxr2pjl0iK8=',
+                  ),
+                  ProductCard(
+                    'Long Sleeve Dress',
+                    '\$45.00',
+                    'https://media.istockphoto.com/id/1087925826/photo/autumn-burgundy-dress-with-embroidery-womens-dress-with-long-sleeve-on-mannequin-womens.jpg?b=1&s=612x612&w=0&k=20&c=WZAoXtHV-RhLu7jpC1Y5HOUj3oNT2u7R1ZGlbjfmsU0=',
+                  ),
+                  ProductCard(
+                    'Sportwear Set',
+                    '\$80.00',
+                    'https://images.pexels.com/photos/31312270/pexels-photo-31312270/free-photo-of-cyclist-challenging-mountain-road-in-daylight.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CategoryButton extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final bool isActive;
+
+  const CategoryButton({super.key, required this.label, required this.icon, this.isActive = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CircleAvatar(
+          backgroundColor: isActive ? Colors.black : Colors.grey[300],
+          child: Icon(icon, color: isActive ? Colors.white : Colors.black),
+        ),
+        const SizedBox(height: 8),
+        Text(label, style: TextStyle(color: isActive ? Colors.black : Colors.grey)),
+      ],
+    );
+  }
+}
+
+class ProductCard extends StatelessWidget {
+  final String title;
+  final String price;
+  final String imageUrl;
+
+  const ProductCard(this.title, this.price, this.imageUrl, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 100,
+          height: 150,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            image: DecorationImage(
+              image: NetworkImage(imageUrl), 
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(title, style: const TextStyle(fontSize: 14)),
+        Text(price, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+      ],
+    );
+  }
+}

@@ -1,0 +1,226 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(CoffeeApp());
+}
+
+class CoffeeApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: CoffeeHomePage(),
+    );
+  }
+}
+
+class CoffeeHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeader(),
+            _buildSearchBar(),
+            _buildPromoBanner(),
+            _buildCategoryTabs(),
+            _buildProductGrid(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Location", style: TextStyle(color: Colors.grey, fontSize: 14)),
+              Row(
+                children: [
+                  Text("Bilzen, Tanjungbalai", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Icon(Icons.keyboard_arrow_down),
+                ],
+              ),
+            ],
+          ),
+          CircleAvatar(
+            backgroundImage: NetworkImage('https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=2048x2048&w=is&k=20&c=8QovDK9XochFpaIC-N3pn5EEaRSVuE1SKpQDVUxLSUk='), 
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: TextField(
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.search, color: Colors.grey),
+          hintText: "Search coffee",
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPromoBanner() {
+    return Padding(
+      padding: EdgeInsets.all(16),
+      child: Container(
+        height: 150,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          image: DecorationImage(
+            image: NetworkImage('https://images.pexels.com/photos/2396220/pexels-photo-2396220.jpeg?auto=compress&cs=tinysrgb&w=600'), 
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              left: 10,
+              top: 10,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(8)),
+                child: Text("Promo", style: TextStyle(color: Colors.white)),
+              ),
+            ),
+            Positioned(
+              left: 10,
+              bottom: 10,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.6),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  "Buy one get one Free",
+                  style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryTabs() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _categoryTab("Cappuccino", true),
+          _categoryTab("Macchiato", false),
+          _categoryTab("Latte", false),
+          _categoryTab("Americano", false),
+        ],
+      ),
+    );
+  }
+
+  Widget _categoryTab(String title, bool isSelected) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: isSelected ? Colors.brown : Colors.grey[300],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        title,
+        style: TextStyle(color: isSelected ? Colors.white : Colors.black),
+      ),
+    );
+  }
+
+  Widget _buildProductGrid() {
+    return Padding(
+      padding: EdgeInsets.all(16),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 0.8,
+        ),
+        itemCount: 4,
+        itemBuilder: (context, index) {
+          return _buildProductCard();
+        },
+      ),
+    );
+  }
+
+  Widget _buildProductCard() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+                image: DecorationImage(
+                  image: NetworkImage('https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=600'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.star, color: Colors.orange, size: 16),
+                    SizedBox(width: 4),
+                    Text("4.8", style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                Text("Cappuccino", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("with Chocolate", style: TextStyle(color: Colors.grey)),
+                SizedBox(height: 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("\$4.53", style: TextStyle(fontWeight: FontWeight.bold)),
+                    IconButton(
+                      icon: Icon(Icons.add_circle, color: Colors.brown),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
